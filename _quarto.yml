@@ -4,7 +4,6 @@ project:
 
 website:
   title: "My Awesome CSCI 0451 Blog"
-  output-dir: docs
   navbar:
     background: "#112a39"
     right:
