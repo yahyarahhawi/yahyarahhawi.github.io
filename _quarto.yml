@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Yahya's Blog"
+  site-url: "https://yahyarahhawi.github.io"
   navbar:
     right:
       - text: "Posts"
