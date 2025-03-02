@@ -1,5 +1,5 @@
 ---
-title: "My Awesome CSCI 0451 Blog"
+title: "My Machine Learning Blog"
 listing:
   contents: posts
   sort: "date desc"

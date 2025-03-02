@@ -1,26 +1,18 @@
 project:
   type: website
-  output-dir: docs
 
 website:
-  title: "My Awesome CSCI 0451 Blog"
+  title: "Yahya's Blog"
   navbar:
-    background: "#112a39"
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+        href: https://github.com/yahyarahhawi
+      - icon: linkedin
+        href: https://www.linkedin.com/in/yahyarahhawi
+  search: true
 
 format:
   html:
-    title-block-banner: img/landscape.png
-    title-block-banner-color: white
     theme: cosmo
-    css: styles.css
-
-
-
-
-
+    toc: true
