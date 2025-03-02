@@ -4,16 +4,14 @@ image: profile.jpg
 about:
   template: jolla
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com
+    - icon: github
+      text: GitHub
+      href: https://github.com/yahyarahhawi
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
-    - icon: github
-      text: Github
-      href: https://github.com
-
+      href: https://www.linkedin.com/in/yahyarahhawi
 ---
 
-About this blog
+Hi, I'm Yahya!  
+
+This blog is where I share my learning journey in machine learning, coding, and projects I'm working on.
