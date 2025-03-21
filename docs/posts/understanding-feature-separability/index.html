@@ -228,13 +228,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We begin by loading the <strong>Palmer Penguins dataset</strong>, which contains detailed measurements of three penguin species observed in Antarctica. This dataset is widely used for classification tasks and provides valuable insights into species differentiation based on physical attributes.</p>
 <p>By loading the dataset into a Pandas DataFrame, we gain access to numerical and categorical features that will later be used for exploratory data analysis and machine learning modeling.</p>
 <div id="cell-3" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>train_url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/PhilChodrow/ml-notes/main/data/palmer-penguins/train.csv"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> pd.read_csv(train_url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="data-preprocessing-cleaning-and-encoding" class="level3">
@@ -252,8 +249,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>After completing these steps, the dataset is structured and ready for exploration.</p>
 <div id="cell-5" class="cell" data-execution_count="2">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>le <span class="op">=</span> LabelEncoder()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>le.fit(train[<span class="st">"Species"</span>])</span>
@@ -268,16 +263,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df, y</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>X_train, y_train <span class="op">=</span> prepare_data(train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="let-us-check-out-the-first-5-rows-in-our-dataframe" class="level3">
 <h3 class="anchored" data-anchor-id="let-us-check-out-the-first-5-rows-in-our-dataframe">let us check out the first 5 rows in our dataframe</h3>
 <div id="cell-7" class="cell" data-execution_count="3">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
@@ -418,8 +409,6 @@ We focus on six key quantitative features:
 Using <strong>Seaborn’s <code>pairplot</code></strong>, we scatter-plot each feature against every other feature. The points are <strong>color-coded by species</strong>, allowing us to observe feature distributions and separability among species.</li>
 </ul>
 <div id="cell-9" class="cell" data-execution_count="4">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -428,7 +417,6 @@ Using <strong>Seaborn’s <code>pairplot</code></strong>, we scatter-plot each f
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>sns.pairplot(X_train[quantitative_features].assign(Species<span class="op">=</span>le.inverse_transform(y_train)), hue<span class="op">=</span><span class="st">"Species"</span>) <span class="co">#assign is coloring the points by species</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -482,8 +470,6 @@ Moving forward, we will explore these features quantitatively and evaluate their
 </ul>
 <p>By analyzing these distributions, we can gain insights into the <strong>most discriminative features</strong> for classification and validate our earlier observations from the pair plot.</p>
 <div id="cell-13" class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select numerical features</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> [<span class="st">"Culmen Length (mm)"</span>, <span class="st">"Culmen Depth (mm)"</span>, <span class="st">"Flipper Length (mm)"</span>, <span class="st">"Body Mass (g)"</span>, <span class="st">"Delta 15 N (o/oo)"</span>, <span class="st">"Delta 13 C (o/oo)"</span>]</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -500,7 +486,6 @@ Moving forward, we will explore these features quantitatively and evaluate their
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -553,8 +538,6 @@ Moving forward, we will explore these features quantitatively and evaluate their
 <li>A <strong>lower IoU score</strong> means that the species distributions are <strong>more distinct</strong>, making the feature a stronger candidate for classification.</li>
 </ul>
 <div id="cell-16" class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> gaussian_kde</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -597,7 +580,6 @@ Moving forward, we will explore these features quantitatively and evaluate their
 <span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Display IoU scores</span></span>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"IoU Scores for Feature Separation:"</span>)</span>
 <span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iou_df.sort_values(by<span class="op">=</span><span class="st">"IoU Score"</span>, ascending<span class="op">=</span><span class="va">True</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>IoU Scores for Feature Separation:
                      IoU Score
@@ -625,8 +607,6 @@ Culmen Depth (mm)     0.353053</code></pre>
 <h3 class="anchored" data-anchor-id="choosing-the-most-balanced-categorical-feature"><strong>Choosing the Most Balanced Categorical Feature</strong></h3>
 <p>In this section, we examine the <strong>maximum category proportion</strong> across three categorical features—Island, Sex, and Clutch Completion. A <strong>lower</strong> maximum proportion indicates a <strong>more balanced feature</strong>, where the data points are more evenly distributed among the categories. We then select the feature with the <strong>lowest</strong> maximum proportion, as it is generally <strong>more information</strong> for classification.</p>
 <div id="cell-19" class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define categorical feature groups</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>feature_groups <span class="op">=</span> {</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Island"</span>: [<span class="st">"Island_Biscoe"</span>, <span class="st">"Island_Dream"</span>, <span class="st">"Island_Torgersen"</span>],</span>
@@ -656,7 +636,6 @@ Culmen Depth (mm)     0.353053</code></pre>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(max_percentage_df.sort_values(by<span class="op">=</span><span class="st">"Max Category %"</span>, ascending<span class="op">=</span><span class="va">True</span>))</span>
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss"> Based on more balanced distribution, the best categorical feature is: </span><span class="sc">{</span>best_feature<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Feature Maximum Occurrence Percentages (Lower is Better for Class Separation):
@@ -671,11 +650,8 @@ Clutch Completion       89.062500
 </div>
 <p>Based on these results, <strong>Island</strong> looks like it is the most balanced categorical feature, with the smallest maximum proportion among its categories. This indicates it has <strong>greater potential</strong> to help our model distinguish between different penguin species more effectively compared to the other options.</p>
 <div id="cell-21" class="cell" data-execution_count="57">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sorted_IOU <span class="op">=</span> <span class="bu">sorted</span>(iou_scores.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sorted_IOU</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display" data-execution_count="57">
 <pre><code>[('Flipper Length (mm)', 0.1993963154709996),
  ('Delta 13 C (o/oo)', 0.23706316175669087),
@@ -693,28 +669,22 @@ Clutch Completion       89.062500
 - The <strong>best categorical feature</strong>, determined from the <strong>most balanced distribution</strong> among categories.</p>
 <p>By fitting the model on the training data, we can evaluate its performance and see how well it distinguishes between penguin species.</p>
 <div id="cell-23" class="cell" data-execution_count="70">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [sorted_IOU[i][<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>)]</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>cols <span class="op">+=</span> feature_groups[best_feature]</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span> <span class="dv">1500</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>LR.fit(X_train[cols], y_train)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>LR.score(X_train[cols], y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display" data-execution_count="70">
 <pre><code>0.984375</code></pre>
 </div>
 </div>
 <div id="cell-24" class="cell" data-execution_count="71">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>test_url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/PhilChodrow/ml-notes/main/data/palmer-penguins/test.csv"</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> pd.read_csv(test_url)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>X_test, y_test <span class="op">=</span> prepare_data(test)</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>LR.score(X_test[cols], y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display" data-execution_count="71">
 <pre><code>0.9558823529411765</code></pre>
 </div>
@@ -727,8 +697,6 @@ Clutch Completion       89.062500
 - <strong>95.6% accuracy</strong> on the <strong>test set</strong>, suggesting that the model generalizes well to unseen data.</p>
 <p>The result is good with logistic regression! let us try a couple more models from Scikit-learn. mainly, random forest and decision trees.</p>
 <div id="cell-26" class="cell" data-execution_count="72">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>TR <span class="op">=</span> DecisionTreeClassifier()</span>
@@ -739,7 +707,6 @@ Clutch Completion       89.062500
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>RF_score <span class="op">=</span> RF.score(X_train[cols], y_train)</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Decision Tree Accuracy: </span><span class="sc">{</span>TR_score<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random Forest Accuracy: </span><span class="sc">{</span>RF_score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Decision Tree Accuracy: 1.0
 Random Forest Accuracy: 1.0</code></pre>
@@ -753,14 +720,11 @@ Random Forest Accuracy: 1.0</code></pre>
 - <strong>Random Forest Classifier</strong>: A method that builds multiple decision trees and averages their predictions for better generalization.</p>
 <p>Both models achieve <strong>100% accuracy</strong> on the training set, indicating they perfectly classify the training data. While this is promising, it may also suggest potential <strong>overfitting</strong>, which we will further evaluate by testing on unseen data. let us try them on test set</p>
 <div id="cell-28" class="cell" data-execution_count="73">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>TR_test_score <span class="op">=</span> TR.score(X_test[cols], y_test)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Decision Tree Test Accuracy: </span><span class="sc">{</span>TR_test_score<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>RF_test_score <span class="op">=</span> RF.score(X_test[cols], y_test)</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random Forest Test Accuracy: </span><span class="sc">{</span>RF_test_score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Decision Tree Test Accuracy: 0.9411764705882353
 Random Forest Test Accuracy: 0.9558823529411765</code></pre>
@@ -780,8 +744,6 @@ Random Forest Test Accuracy: 0.9558823529411765</code></pre>
 <h3 class="anchored" data-anchor-id="visualizing-decision-boundaries-with-plot-regions"><strong>Visualizing Decision Boundaries with Plot Regions</strong></h3>
 <p>This function <strong>plots decision regions</strong> for a given classification model, allowing us to visually inspect how the model separates penguin species based on the selected features.</p>
 <div id="cell-31" class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_regions(model, X, y):</span>
@@ -834,13 +796,9 @@ Random Forest Test Accuracy: 0.9558823529411765</code></pre>
 <span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>      </span>
 <span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>      plt.tight_layout()</span>
 <span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 <div id="cell-32" class="cell" data-execution_count="52">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plot_regions(LR, X_train[cols], y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -850,10 +808,7 @@ Random Forest Test Accuracy: 0.9558823529411765</code></pre>
 </div>
 </div>
 <div id="cell-33" class="cell" data-execution_count="53">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>plot_regions(LR, X_test[cols], y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -888,8 +843,6 @@ Random Forest Test Accuracy: 0.9558823529411765</code></pre>
 </ul>
 <p>Overall, this visualization helps us <strong>interpret model decisions</strong> and highlights where our chosen features perform well versus where improvements might be needed. let’s now check out confusion matrix</p>
 <div id="cell-35" class="cell" data-execution_count="54">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> LR.predict(X_test[cols])</span>
@@ -902,7 +855,6 @@ Random Forest Test Accuracy: 0.9558823529411765</code></pre>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>)</span>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix for Logistic Regression on Test Data'</span>)</span>
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">

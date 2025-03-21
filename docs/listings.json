@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Auditing-bias/index.html",
       "/posts/understanding-feature-separability/index.html"
     ]
   }
