@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Yahya Rahhawi">
+<meta name="dcterms.date" content="2025-03-22">
 
-<title>My Machine Learning Blog – Yahya’s Blog</title>
+<title>When Numbers Lie – Yahya’s Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +22,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,65 +88,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -137,7 +99,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Yahya’s Blog</span>
     </a>
   </div>
@@ -148,11 +110,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./posts/index.qmd"> 
+    <a class="nav-link" href="../../posts/index.qmd"> 
 <span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -173,25 +135,50 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Qmlhcw==">Bias <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RmFpcm5lc3M=">Fairness <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UHJvamVjdHM=">Projects <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#when-numbers-lie-rethinking-fairness-in-an-age-of-algorithmic-authority" id="toc-when-numbers-lie-rethinking-fairness-in-an-age-of-algorithmic-authority" class="nav-link active" data-scroll-target="#when-numbers-lie-rethinking-fairness-in-an-age-of-algorithmic-authority">When Numbers Lie: Rethinking Fairness in an Age of Algorithmic Authority</a>
+  <ul class="collapse">
+  <li><a href="#the-illusion-of-objectivity" id="toc-the-illusion-of-objectivity" class="nav-link" data-scroll-target="#the-illusion-of-objectivity">The Illusion of Objectivity</a></li>
+  <li><a href="#when-quantitative-methods-work-and-dont" id="toc-when-quantitative-methods-work-and-dont" class="nav-link" data-scroll-target="#when-quantitative-methods-work-and-dont">When Quantitative Methods Work (and Don’t)</a></li>
+  <li><a href="#when-algorithms-backfire" id="toc-when-algorithms-backfire" class="nav-link" data-scroll-target="#when-algorithms-backfire">When Algorithms Backfire</a></li>
+  <li><a href="#redefining-fairness" id="toc-redefining-fairness" class="nav-link" data-scroll-target="#redefining-fairness">Redefining Fairness</a></li>
+  <li><a href="#a-qualified-agreement" id="toc-a-qualified-agreement" class="nav-link" data-scroll-target="#a-qualified-agreement">A Qualified Agreement</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">My Machine Learning Blog</h1>
+<h1 class="title">When Numbers Lie</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Yahya Rahhawi </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 22, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -201,120 +188,71 @@ window.Quarto = {
 </header>
 
 
+<section id="when-numbers-lie-rethinking-fairness-in-an-age-of-algorithmic-authority" class="level1">
+<h1>When Numbers Lie: Rethinking Fairness in an Age of Algorithmic Authority</h1>
+<p>I came to machine learning because I believed in its elegance—the way a few lines of code could make predictions, optimize decisions, and maybe even eliminate human bias. Studying philosophy alongside computer science, I have always wondered if utilizing the machine, supported with some rigorous math, can eliminate some tendencies in some humans to perpetuate injustice and unfairness. But somewhere along the way, this class made me ask: Whose data is this model trained on? What decisions does it reinforce? And who gets left behind when we define “fairness” with math?</p>
+<p>These questions became even more urgent as I read Arvind Narayanan’s 2022 James Baldwin Lecture, <em>The Limits of the Quantitative Approach to Discrimination</em> <span class="citation" data-cites="narayanan2022limits">(<a href="#ref-narayanan2022limits" role="doc-biblioref">Narayanan 2022</a>)</span>. Narayanan argues that current quantitative methods often serve to justify the status quo more than they challenge it. That’s a bold statement—especially for a field that prides itself on objectivity and precision. But as I sat with this claim, I realized: it resonates. At a time when the U.S. government is investing over $500 billion into machine learning <span class="citation" data-cites="reutersAI2025">(<a href="#ref-reutersAI2025" role="doc-biblioref">Reuters Staff 2025</a>)</span>—much of it flowing into public systems that affect millions of lives—it’s critical to examine what ethical foundation, if any, these models are built on. Especially during a time where the government is displaying tendencies to practice radical, and often problematic, interpretations of justice, using means that I consider unethical and are against what states can do. Is machine learning another tool for them to justify their actions?</p>
+<p>This isn’t a theoretical concern. The U.S. government has reportedly begun employing AI-powered agents to monitor the social media of international students, scanning for signs of “support” for terrorist organizations, but also any signs of criticizing the complicity of the government in war crimes happening right now in the Middle East <span class="citation" data-cites="axiosStudentMonitoring2025 fpColumbiaDetention2025">(<a href="#ref-axiosStudentMonitoring2025" role="doc-biblioref">Fried 2025</a>; <a href="#ref-fpColumbiaDetention2025" role="doc-biblioref">Weiss and Parker 2025</a>)</span>. This process—untransparent, unauditable, and unchallengeable—has led to the flagging and deportation of students based on ambiguous indicators and culturally uncontextualized speech. What’s happening here is exactly what Narayanan warns about: using mathematical tools to assess fairness based on the same logics that have historically led to unfairness. These models are embedded with political and cultural assumptions, yet shielded from scrutiny by a veil of statistical legitimacy.</p>
+<section id="the-illusion-of-objectivity" class="level2">
+<h2 class="anchored" data-anchor-id="the-illusion-of-objectivity">The Illusion of Objectivity</h2>
+<p>Narayanan’s core critique is this: quantitative methods, especially when wielded without critical awareness, give us the illusion of objectivity while silently reproducing injustice <span class="citation" data-cites="narayanan2022limits">(<a href="#ref-narayanan2022limits" role="doc-biblioref">Narayanan 2022</a>)</span>. Researchers make countless subjective decisions when designing models—what features to include, what fairness metric to optimize, what dataset to trust. These choices are often framed as neutral, yet they reflect particular worldviews and assumptions.</p>
+<p>What’s worse is that these methods rarely question the framing of the problem. Narayanan argues that if we assess reality with the same lens that led it to become unfair, we can’t expect much change to happen. This means that there’s a structural trap in the way we approach fairness: instead of shifting the paradigm, we tweak parameters.</p>
+<p>For example, if a hiring algorithm discriminates against people with non-white-sounding names, we might try to retrain it with “blind” features or adjust the threshold. But the question remains: why does the system prioritize certain qualifications or communication styles in the first place? What histories of exclusion built the resume formats we consider “professional”? These deeper layers are not captured by confusion matrices or calibration curves.</p>
+</section>
+<section id="when-quantitative-methods-work-and-dont" class="level2">
+<h2 class="anchored" data-anchor-id="when-quantitative-methods-work-and-dont">When Quantitative Methods Work (and Don’t)</h2>
+<p>To be clear, quantitative methods aren’t useless. In <em>Fairness and Machine Learning</em> <span class="citation" data-cites="barocasFairnessMachineLearning2023">(<a href="#ref-barocasFairnessMachineLearning2023" role="doc-biblioref">Barocas, Hardt, and Narayanan 2023</a>)</span>, Barocas, Hardt, and Narayanan describe how algorithms can expose patterns of inequality at a scale that human intuition cannot. They point out that data-driven systems can, in some cases, be more transparent than human decision-making—because at least we can audit the code and track the outcomes.</p>
+<p>One powerful example is the use of audit studies in hiring discrimination. Bertrand and Mullainathan’s seminal resume experiment, where identical resumes were sent out with “white-sounding” and “Black-sounding” names, revealed stark differences in callback rates. Technically, this study was probing the fairness notion of demographic parity or equal opportunity, depending on how you interpret the outcome variable. Morally, it revealed a clear case of allocative harm: job opportunities were being withheld purely on the basis of racial signifiers.</p>
+<p>The strength of this study lies in its simplicity and clarity. It shows that discrimination exists—not as an abstract theory but as a measurable, reproducible reality. It forced a conversation in policy and public discourse, and rightly so. Fairness doesn’t simply arise when we get rid of human actors in making the decisions directly, and replacing them with machines designed to observe our perspective (through data) of the status quo, in fact, this is the last thing we want to do when we try to reimagine our society to be more fair and radically different from the unfair version of what already exists.</p>
+<p>But even this kind of analysis has limits. As <em>Fairness and Machine Learning</em> points out, the use of names as proxies for race is itself fraught. What if employers are responding not to perceived race, but to assumptions about class, region, or education? The interpretation is never clean. And that’s part of Narayanan’s argument: the idea that we can simply “measure” fairness assumes a tidy, apolitical world that does not exist.</p>
+</section>
+<section id="when-algorithms-backfire" class="level2">
+<h2 class="anchored" data-anchor-id="when-algorithms-backfire">When Algorithms Backfire</h2>
+<p>A more disturbing example of quantitative methods going wrong is found in the use of risk assessment tools in criminal justice. Tools like COMPAS assign scores to defendants predicting their likelihood of reoffending, often based on data from law enforcement records. These tools are “calibrated,” meaning that for each risk score, the actual rate of recidivism is about the same across racial groups.</p>
+<p>Technically, calibration sounds like a fairness win. But morally? It’s a disaster. As ProPublica and researchers like Julia Angwin and Virginia Eubanks have shown, the data itself is biased: arrest records reflect over-policing in Black neighborhoods, not an intrinsic difference in behavior. So even if the algorithm is mathematically “fair,” its predictions reinforce biased policing and sentencing.</p>
+<p>This is what <em>Data Feminism</em> by D’Ignazio and Klein (2023) calls the “privilege hazard” <span class="citation" data-cites="dignazioDataFeminism2023">(<a href="#ref-dignazioDataFeminism2023" role="doc-biblioref">D’Ignazio and Klein 2023</a>)</span>: the people designing these systems often cannot see the assumptions baked into their models because they’ve never had to. Their lives aren’t algorithmically surveilled, flagged, or punished. And so they optimize for clean metrics rather than complex realities.</p>
+<p>Their framework emphasizes that fairness is not just about inputs and outputs—it’s about power. Who collects the data? Who defines the labels? Who decides which outcomes matter? <em>Data Feminism</em> argues that without answering these questions, we are not doing fairness—we are doing statistical performance art.</p>
+</section>
+<section id="redefining-fairness" class="level2">
+<h2 class="anchored" data-anchor-id="redefining-fairness">Redefining Fairness</h2>
+<p>To me, fairness goes far beyond meritocracy—the belief that the most “qualified” should always win. In practice, meritocracy often just repackages privilege. Fairness isn’t about pretending we all start at the same line; it’s about acknowledging that we don’t—and building systems that reflect that truth.</p>
+<p>Fairness also goes beyond what an algorithm can or can’t do. It’s a social commitment: a way of seeing others as equals, of including their experiences and voices in shaping the systems they live under. We can’t fix injustice with math alone. We need historical awareness, community input, qualitative insights, and above all, humility.</p>
+<p>Right now, too many people put too much trust in numbers without understanding what those numbers mean—or what they erase. In a world where “data-driven” is a synonym for “truth,” we have to ask: whose truths are missing from the dataset?</p>
+<p>This is especially urgent for international students like myself. The idea that an AI agent could monitor my posts—stripping words from context, translating emotion into probability scores, and potentially flagging me for deportation—isn’t just dystopian. It’s happening. It’s real. It forces me to ask whether the systems we’re building even have a place for someone like me.</p>
+</section>
+<section id="a-qualified-agreement" class="level2">
+<h2 class="anchored" data-anchor-id="a-qualified-agreement">A Qualified Agreement</h2>
+<p>So, where do I stand on Narayanan’s claim that quantitative methods “do more harm than good”? I agree—but with qualifications.</p>
+<p>Yes, these tools often uphold the status quo. Yes, they obscure rather than reveal injustice. Yes, they can even be dangerous when placed in the hands of people who lack understanding of the cultural, political, and historical narratives that shaped the data.</p>
+<p>But that’s not a reason to give up on the tools. It’s a reason to change who uses them—and how.</p>
+<p>As Barocas et al.&nbsp;suggest, quantitative methods can serve transparency, accountability, and insight—if wielded with care <span class="citation" data-cites="barocasFairnessMachineLearning2023">(<a href="#ref-barocasFairnessMachineLearning2023" role="doc-biblioref">Barocas, Hardt, and Narayanan 2023</a>)</span>. But that care has to be built into every step of the process: from data collection to metric choice to outcome interpretation. It requires interdisciplinary work, community engagement, and ongoing critique. It requires treating fairness not as a mathematical constraint, but as a moral imperative.</p>
+<p>I still believe in machine learning. But I no longer believe that fairness can be computed. Fairness has to be created—with intention, with reflection, and with people, not just models, at the center.</p>
 
 
 
+</section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1742616000000" data-listing-file-modified-sort="1742617978507" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1441">
-<div class="thumbnail">
-<p><a href="./posts/when-numbers-lie/index.html" class="no-external"></a></p><a href="./posts/when-numbers-lie/index.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/when-numbers-lie/index.html" class="no-external"></a></p>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-barocasFairnessMachineLearning2023" class="csl-entry" role="listitem">
+Barocas, Solon, Moritz Hardt, and Arvind Narayanan. 2023. <em>Fairness and Machine Learning: Limitations and Opportunities</em>. <span>Cambridge, Massachusetts</span>: <span>The MIT Press</span>.
 </div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/when-numbers-lie/index.html" class="no-external">When Numbers Lie</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/when-numbers-lie/index.html" class="no-external"></a>
+<div id="ref-dignazioDataFeminism2023" class="csl-entry" role="listitem">
+D’Ignazio, Catherine, and Lauren F. Klein. 2023. <em>Data Feminism</em>. First MIT Press paperback edition. Cambridge, Massachusetts: The MIT Press.
 </div>
-<div class="listing-description">
-<a href="./posts/when-numbers-lie/index.html" class="no-external">I came to machine learning because I believed in its elegance—the way a few lines of code could make predictions, optimize decisions, and maybe even eliminate human bias.…</a>
+<div id="ref-axiosStudentMonitoring2025" class="csl-entry" role="listitem">
+Fried, Ina. 2025. <span>“State Department Deploys AI to Monitor Foreign Students’ Social Media.”</span> 2025. <a href="https://www.axios.com/2025/03/06/state-department-ai-revoke-foreign-student-visas-hamas">https://www.axios.com/2025/03/06/state-department-ai-revoke-foreign-student-visas-hamas</a>.
 </div>
+<div id="ref-narayanan2022limits" class="csl-entry" role="listitem">
+Narayanan, Arvind. 2022. <span>“The Limits of the Quantitative Approach to Discrimination.”</span> Speech.
 </div>
-<div class="metadata">
-<a href="./posts/when-numbers-lie/index.html" class="no-external">
-<div class="listing-date">
-Mar 22, 2025
+<div id="ref-reutersAI2025" class="csl-entry" role="listitem">
+Reuters Staff. 2025. <span>“Trump to Announce Private Sector AI Infrastructure Investment - CBS Reports.”</span> 2025. <a href="https://www.reuters.com/technology/artificial-intelligence/trump-announce-private-sector-ai-infrastructure-investment-cbs-reports-2025-01-21/">https://www.reuters.com/technology/artificial-intelligence/trump-announce-private-sector-ai-infrastructure-investment-cbs-reports-2025-01-21/</a>.
 </div>
-<div class="listing-author">
-Yahya Rahhawi
+<div id="ref-fpColumbiaDetention2025" class="csl-entry" role="listitem">
+Weiss, Bari, and Olivia Reingold Parker. 2025. <span>“The ICE Detention of a Columbia Student.”</span> 2025. <a href="https://www.thefp.com/p/the-ice-detention-of-a-columbia-student">https://www.thefp.com/p/the-ice-detention-of-a-columbia-student</a>.
 </div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDQmlhcyUyQ0ZhaXJuZXNz" data-listing-date-sort="1742529600000" data-listing-file-modified-sort="1742595549619" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1970">
-<div class="thumbnail">
-<p><a href="./posts/Auditing-bias/index.html" class="no-external"></a></p><a href="./posts/Auditing-bias/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/Auditing-bias/index_files/figure-html/cell-10-output-2.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/Auditing-bias/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/Auditing-bias/index.html" class="no-external">Auditing Bias</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/Auditing-bias/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">
-Machine Learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Qmlhcw=='); return false;">
-Bias
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('RmFpcm5lc3M='); return false;">
-Fairness
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/Auditing-bias/index.html" class="no-external">Here we are downloading the dataset using <code>folktables</code>, then we define a classification problem to predict whether an individual’s income exceeds $50K. We exclude <code>SEX</code> and <code>PINCP</code>…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/Auditing-bias/index.html" class="no-external">
-<div class="listing-date">
-Mar 21, 2025
-</div>
-<div class="listing-author">
-Yahya Rahhawi
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDUHJvamVjdHM=" data-listing-date-sort="1740891600000" data-listing-file-modified-sort="1742595559748" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2047">
-<div class="thumbnail">
-<p><a href="./posts/understanding-feature-separability/index.html" class="no-external"></a></p><a href="./posts/understanding-feature-separability/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/understanding-feature-separability/index_files/figure-html/cell-5-output-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/understanding-feature-separability/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/understanding-feature-separability/index.html" class="no-external">Understanding Feature Separability in Penguin Classification</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/understanding-feature-separability/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">
-Machine Learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('UHJvamVjdHM='); return false;">
-Projects
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/understanding-feature-separability/index.html" class="no-external">This analysis explores <strong>penguin species classification</strong> using <strong>machine learning models</strong> based on physical measurements from the <strong>Palmer Penguins dataset</strong>. We apply <strong>exploratory…</strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong></a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/understanding-feature-separability/index.html" class="no-external">
-<div class="listing-date">
-Mar 2, 2025
-</div>
-<div class="listing-author">
-Yahya Rahhawi
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
