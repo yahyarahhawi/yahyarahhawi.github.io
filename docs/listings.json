@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Exploring-Perceptrom/index.html",
       "/posts/when-numbers-lie/index.html",
       "/posts/Auditing-bias/index.html",
       "/posts/understanding-feature-separability/index.html"
