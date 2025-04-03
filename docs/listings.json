@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Implementing-logistic-regression/SGD.html",
       "/posts/Exploring-Perceptrom/index.html",
       "/posts/when-numbers-lie/index.html",
       "/posts/Auditing-bias/index.html",
