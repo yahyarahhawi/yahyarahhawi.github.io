@@ -486,12 +486,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To push the boundaries of optimization strategies, I compared my <code>EvolutionOptimizer</code> with traditional gradient descent on a high-dimensional, low-noise synthetic dataset (200 features, 1000 points).</p>
 <p>I configured the evolutionary algorithm with a high mutation rate (0.5) and a population size of 100. Both optimizers ran until they achieved 100% training accuracy. I recorded the loss at each step and the total time taken for convergence.</p>
 <p>As shown in the plot, the two approaches followed different optimization paths. Gradient descent (with momentum) was faster and more stable, while the evolutionary strategy took longer but still reached perfect accuracy. This experiment highlights the potential of evolutionary algorithms in settings where gradient information is unavailable or unreliable.</p>
-<div id="cell-38" class="cell" data-execution_count="160">
+<div id="cell-38" class="cell" data-execution_count="167">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> classification_data(p_dims<span class="op">=</span><span class="dv">200</span>, noise<span class="op">=</span><span class="fl">0.8</span>, n_points<span class="op">=</span><span class="dv">1000</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> EvolutionOptimizer(LR)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>opt.set_mutation(<span class="fl">0.5</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>opt.set_population_size(<span class="dv">20</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>opt.set_population_size(<span class="dv">100</span>)</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>losses <span class="op">=</span> []</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time.time()</span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> accuracy(LR, X, y) <span class="op">&lt;</span> <span class="dv">1</span>:</span>
@@ -518,8 +518,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time taken:  0.4016590118408203
-Time taken:  0.015601873397827148</code></pre>
+<pre><code>Time taken:  1.2220420837402344
+Time taken:  0.015898942947387695</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -539,7 +539,7 @@ Time taken:  0.015601873397827148</code></pre>
 <h3 class="anchored" data-anchor-id="visualizing-decision-boundaries-from-the-population">Visualizing Decision Boundaries from the Population</h3>
 <p>To better understand the diversity within the population of evolved models, I randomly sampled four individuals from the final population of the <code>EvolutionOptimizer</code>. Since the data lives in a 200-dimensional space, I used PCA to project both the data and model weights into 2D for visualization.</p>
 <p>Each subplot shows a decision boundary generated from one sampled individual’s projected weights, alongside the full dataset projected into the same PCA space. The axes are fixed between -10 and 10 to provide a consistent frame of reference across plots. This gives a glimpse into the variety of linear separators present in the population, some of which may still be viable despite not being the single “best” solution.</p>
-<div id="cell-41" class="cell" data-execution_count="166">
+<div id="cell-41" class="cell" data-execution_count="168">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> random.sample(LR.population, <span class="dv">4</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
