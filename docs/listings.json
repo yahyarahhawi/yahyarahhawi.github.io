@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/adam/main.html",
       "/posts/Implementing-logistic-regression/SGD.html",
       "/posts/Exploring-Perceptrom/index.html",
       "/posts/when-numbers-lie/index.html",
