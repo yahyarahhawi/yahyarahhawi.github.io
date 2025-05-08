@@ -63,11 +63,11 @@ class Perceptron(LinearModel):
         return ((self.score(X) * y_) <= 0).float().mean()
 
 
-    def grad(self, X, y):
+    def grad(self, X, y, alpha = 0.1):
         scores = self.score(X)
         y_ = 2*y - 1
         mask = (scores * y_) < 0
-        grad = -y_ * mask.float()
+        grad = (alpha / X.size(0)) * (mask.float() * y_).view(-1, 1)
         return (grad * X).mean(0) #since x is a single row of features
 
 class PerceptronOptimizer:
@@ -75,11 +75,14 @@ class PerceptronOptimizer:
     def __init__(self, model):
         self.model = model 
     
-    def step(self, X, y):
+    def step(self, X, y,alpha = 0.1, k = 1):
         """
         Compute one step of the perceptron update using the feature matrix X 
         and target vector y. 
         """
+        ix = torch.randperm(X.size(0))[:k]
+        X = X[ix,:]
+        y = y[ix]
         loss = self.model.loss(X, y)
-        grad = self.model.grad(X, y)
-        self.model.w = self.model.w - grad
+        grad = self.model.grad(X, y, alpha)
+        self.model.w = self.model.w + grad
