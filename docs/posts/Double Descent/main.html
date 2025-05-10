@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Yahya Rahhawi">
+<meta name="dcterms.date" content="2025-05-10">
+
+<title>Overparameterization and Double Descent – Yahya’s Blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yahya’s Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.qmd"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yahyarahhawi"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/yahyarahhawi"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a>
+  <ul class="collapse">
+  <li><a href="#the-breakdown-of-the-normal-equation-when-p-n" id="toc-the-breakdown-of-the-normal-equation-when-p-n" class="nav-link" data-scroll-target="#the-breakdown-of-the-normal-equation-when-p-n">The Breakdown of the Normal Equation When (p &gt; n)</a></li>
+  <li><a href="#testing-linear-regression-on-random-features" id="toc-testing-linear-regression-on-random-features" class="nav-link" data-scroll-target="#testing-linear-regression-on-random-features">Testing Linear Regression on Random Features</a></li>
+  </ul></li>
+  <li><a href="#more-complex-pattern-number-of-corruption-artifacts-in-images" id="toc-more-complex-pattern-number-of-corruption-artifacts-in-images" class="nav-link" data-scroll-target="#more-complex-pattern-number-of-corruption-artifacts-in-images">More Complex Pattern: Number of Corruption Artifacts in Images</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Overparameterization and Double Descent</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Machine Learning</div>
+    <div class="quarto-category">Implementation</div>
+    <div class="quarto-category">Optimization</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Yahya Rahhawi </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 10, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="abstract" class="level2">
+<h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
+<p>In this project, we explore the phenomenon of double descent in overparameterized linear regression models. Using a custom feature mapping approach inspired by kernel methods, we transform 1-dimensional data into a higher-dimensional space using random feature projections. This overparameterization allows the model to capture complex, nonlinear patterns but also introduces the risk of overfitting when the number of features exceeds the number of data points. We observe that the test error initially decreases as the model gains capacity, spikes sharply around the interpolation threshold, and then decreases again as the model becomes significantly overparameterized. This counterintuitive behavior highlights the unique generalization properties of modern machine learning models and provides insights into why deep networks can perform well despite their extreme parameter counts. You can see my implementation of the closed-form linear regression at <a href="https://github.com/yahyarahhawi/yahyarahhawi.github.io/blob/main/posts/Implementing-logistic-regression/logistic.py">this GitHub link</a>.</p>
+<div id="01550e0f" class="cell" data-execution_count="82">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext autoreload</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>autoreload <span class="dv">2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> linear <span class="im">import</span> MyLinearRegression, OverParameterizedLinearRegressionOptimizer</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload</code></pre>
+</div>
+</div>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>This cell defines the RandomFeatures class for generating random nonlinear feature maps, which is adapted from Professor Chodrow’s notes. The RandomFeatures class constructs high-dimensional representations of input data using random weight vectors and bias terms, with customizable activation functions. This is a crucial step in implementing overparameterized linear regression, allowing the model to capture complex, nonlinear relationships in the data. The default activation function is the logistic sigmoid, but it can be replaced with other functions, such as the square function, for experimentation with different feature mappings.</p>
+<div id="fa4dc595" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sig(x): </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>torch.exp(<span class="op">-</span>x))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> square(x): </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RandomFeatures:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Random sigmoidal feature map. This feature map must be "fit" before use, like this: </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">    phi = RandomFeatures(n_features = 10)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">    phi.fit(X_train)</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">    X_train_phi = phi.transform(X_train)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">    X_test_phi = phi.transform(X_test)</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">    model.fit(X_train_phi, y_train)</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">    model.score(X_test_phi, y_test)</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">    It is important to fit the feature map once on the training set and zero times on the test set. </span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, n_features, activation <span class="op">=</span> sig):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_features <span class="op">=</span> n_features</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.u <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.b <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.activation <span class="op">=</span> activation</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X):</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.u <span class="op">=</span> torch.randn((X.size()[<span class="dv">1</span>], <span class="va">self</span>.n_features), dtype <span class="op">=</span> torch.float64)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.b <span class="op">=</span> torch.rand((<span class="va">self</span>.n_features), dtype <span class="op">=</span> torch.float64) </span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transform(<span class="va">self</span>, X):</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.activation(X <span class="op">@</span> <span class="va">self</span>.u <span class="op">+</span> <span class="va">self</span>.b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="the-breakdown-of-the-normal-equation-when-p-n" class="level3">
+<h3 class="anchored" data-anchor-id="the-breakdown-of-the-normal-equation-when-p-n">The Breakdown of the Normal Equation When (p &gt; n)</h3>
+<p>When optimizing a linear regression model to minimize the mean-squared error loss, we often use the closed-form solution for the optimal weights:</p>
+<p><span class="math display">\[
+\hat{w} = (X^\top X)^{-1} X^\top y
+\]</span></p>
+<p>The issue lies in the matrix <span class="math inline">\(X\)</span>, particularly its invertibility. When the number of features <span class="math inline">\(p\)</span> exceeds the number of data points <span class="math inline">\(n\)</span>, the matrix <span class="math inline">\(X\)</span> must have linearly dependent columns. As a result, the operation <span class="math inline">\(X^\top X\)</span> becomes undefined in the context of matrix inversion because <span class="math inline">\(X^\top X\)</span> is not invertible. Therefore, the normal equation cannot be used when <span class="math inline">\(p &gt; n\)</span>. We will solve this issue by introducing the pseudoinverse. The pseudoinverse, specifically the Moore-Penrose pseudoinverse, extends the concept of matrix inversion to singular or non-square matrices, providing a stable solution for least-squares problems when p &gt; n.</p>
+</section>
+<section id="testing-linear-regression-on-random-features" class="level3">
+<h3 class="anchored" data-anchor-id="testing-linear-regression-on-random-features">Testing Linear Regression on Random Features</h3>
+<p>To test the linear regression I implemented in linear.py, I will first generate my data. my data points are sampled from the function <span class="math inline">\(f(x) = x^4\)</span> with normal noise added to it</p>
+<div id="9495bc33" class="cell" data-execution_count="63">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.tensor(np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), dtype <span class="op">=</span> torch.float64)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X<span class="op">**</span><span class="dv">4</span> <span class="op">-</span> <span class="dv">4</span><span class="op">*</span>X <span class="op">+</span> torch.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>X.shape)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plt.scatter(X, y, color<span class="op">=</span><span class="st">'darkgrey'</span>, label<span class="op">=</span><span class="st">'Data'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now, let’s fit our linear regression model on 150 random features generated from our 2D data. This setup intentionally overparameterizes the model, with the number of features p = 150 exceeding the number of data points n = 100. This allows us to observe the effects of overparameterization and potential overfitting.</p>
+<div id="90f83633" class="cell" data-execution_count="74">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) Create a feature map (try p &gt; n to see overparameterization)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>n_features <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> RandomFeatures(n_features<span class="op">=</span>n_features, activation<span class="op">=</span>square)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>phi.fit(X)                               </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>X_feat <span class="op">=</span> phi.transform(X)                </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) Instantiate your regression model and optimizer</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyLinearRegression()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>opt   <span class="op">=</span> OverParameterizedLinearRegressionOptimizer(model)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Fit closed‑form and predict</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>opt.fit(X_feat, y.squeeze())             <span class="co"># y has shape (100, 1) so we squeeze to (100,)</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_feat)           <span class="co"># continuous predictions</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 4) Plot data vs. learned curve</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>plt.scatter(X.numpy(), y.numpy(), color<span class="op">=</span><span class="st">'darkgrey'</span>, label<span class="op">=</span><span class="st">'Noisy data'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.plot(X.numpy(), y_pred.detach().numpy(), color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>n_features<span class="sc">}</span><span class="ss"> features'</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>)<span class="op">;</span> plt.ylabel(<span class="st">'y / ŷ'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.show()</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 5) Print training MSE</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Train MSE:"</span>, model.loss(X_feat, y.squeeze()).item())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Train MSE: 64.48368582263168</code></pre>
+</div>
+</div>
+<p>We notice that the model did quite well at generalizing the pattern seen in the data, even when the number of features exceeds the number of data points.</p>
+</section>
+</section>
+<section id="more-complex-pattern-number-of-corruption-artifacts-in-images" class="level2">
+<h2 class="anchored" data-anchor-id="more-complex-pattern-number-of-corruption-artifacts-in-images">More Complex Pattern: Number of Corruption Artifacts in Images</h2>
+<p>Let’s now have a look at our random features being applied to corrupted images. Then, we will compare model performance across various range of parameter numbers. This will help us further inpect the effect of adding more features to training loss and testing loss.</p>
+<p>Let’s begin by loading an sample image from sklearn datasets</p>
+<div id="d3c85bd0" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_sample_images</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.ndimage <span class="im">import</span> zoom</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_sample_images()     </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> dataset.images[<span class="dv">1</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="dv">255</span> <span class="op">-</span> X </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> zoom(X,<span class="fl">.2</span>) <span class="co">#decimate resolution</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X.<span class="bu">sum</span>(axis <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X.<span class="bu">max</span>() <span class="op">-</span> X </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X <span class="op">/</span> X.<span class="bu">max</span>()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>flower <span class="op">=</span> torch.tensor(X, dtype <span class="op">=</span> torch.float64)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ax.imshow(flower, cmap <span class="op">=</span> <span class="st">'gray'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>off <span class="op">=</span> ax.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now, let’s corrupt the image by adding a number of corruption artifacts to the image. The corruption artifacts are grey squares added to the image, and we will try to predict the number of artifacts added to the image. I am using the function corrupted_image borrowed from professor Chodrow’s notes.</p>
+<div id="cb481b13" class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> corrupted_image(im, mean_patches <span class="op">=</span> <span class="dv">5</span>): </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    n_pixels <span class="op">=</span> im.size()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    num_pixels_to_corrupt <span class="op">=</span> torch.<span class="bu">round</span>(mean_patches<span class="op">*</span>torch.rand(<span class="dv">1</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    num_added <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> im.clone()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> torch.arange(num_pixels_to_corrupt.item()): </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>: </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> torch.randint(<span class="dv">0</span>, n_pixels[<span class="dv">0</span>], (<span class="dv">2</span>,))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> torch.randint(<span class="dv">0</span>, n_pixels[<span class="dv">0</span>], (<span class="dv">1</span>,))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> torch.randint(<span class="dv">0</span>, n_pixels[<span class="dv">1</span>], (<span class="dv">1</span>,))</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>            s <span class="op">=</span> torch.randint(<span class="dv">5</span>, <span class="dv">10</span>, (<span class="dv">1</span>,))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>            patch <span class="op">=</span> torch.zeros((s.item(), s.item()), dtype <span class="op">=</span> torch.float64) <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># place patch in base image X</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>            X[x:x<span class="op">+</span>s.item(), y:y<span class="op">+</span>s.item()] <span class="op">=</span> patch</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>            num_added <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>: </span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, num_added</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="765bf7ce" class="cell" data-execution_count="79">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> corrupted_image(flower, mean_patches <span class="op">=</span> <span class="dv">20</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ax.imshow(X.numpy(), vmin <span class="op">=</span> <span class="dv">0</span>, vmax <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title <span class="op">=</span> <span class="ss">f"Corrupted Image: </span><span class="sc">{</span>y<span class="sc">}</span><span class="ss"> patches"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>off <span class="op">=</span> plt.gca().axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now that we have an example of what a corrupted image looks like, let’s generate a lot of them! the label will be the actual number of squares added to the image</p>
+<div id="1aa5c3ef" class="cell" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.zeros((n_samples, flower.size()[<span class="dv">0</span>], flower.size()[<span class="dv">1</span>]), dtype <span class="op">=</span> torch.float64)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.zeros(n_samples, dtype <span class="op">=</span> torch.float64)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_samples): </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    X[i], y[i] <span class="op">=</span> corrupted_image(flower, mean_patches <span class="op">=</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, let’s generate our train_test sets. a test size of 0.5 is good to observe the difference in test loss and train loss in our experiment</p>
+<div id="27c00b34" class="cell" data-execution_count="81">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X.reshape(n_samples, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># X.reshape(n_samples, -1).size()</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.5</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let’s train! I am training the model on different number of parameters, starting from 0 to 300, and plotting both the train loss and test loss</p>
+<div id="06198e56" class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>n_features <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="dv">300</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>train_losses <span class="op">=</span> []</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>test_losses <span class="op">=</span> []</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> n_features:</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    phi <span class="op">=</span> RandomFeatures(n_features<span class="op">=</span>n, activation<span class="op">=</span>square)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    phi.fit(X_train)                               <span class="co"># fit once on the training inputs</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    X_train_feat <span class="op">=</span> phi.transform(X_train)                <span class="co"># shape (100, 150)</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    X_test_feat <span class="op">=</span> phi.transform(X_test)                <span class="co"># shape (100, 150)</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> MyLinearRegression()</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    opt   <span class="op">=</span> OverParameterizedLinearRegressionOptimizer(model)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    opt.fit(X_train_feat, y_train.squeeze())             <span class="co"># y has shape (100, 1) so we squeeze to (100,)</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> model.predict(X_test_feat)           <span class="co"># continuous predictions</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    train_losses.append(model.loss(X_train_feat, y_train.squeeze()).item())</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    test_losses.append(model.loss(X_test_feat, y_test.squeeze()).item())</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"n_features: </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">, train_loss: </span><span class="sc">{</span>train_losses[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">, test_loss: </span><span class="sc">{</span>test_losses[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n_features: 0, train_loss: 2769.99, test_loss: 2819.77
+n_features: 1, train_loss: 1286.806936840932, test_loss: 1297.2138670063332
+n_features: 2, train_loss: 944.4266262104342, test_loss: 1066.946044111249
+n_features: 3, train_loss: 1133.9609432030918, test_loss: 1417.9841252270282
+n_features: 4, train_loss: 887.6151047356211, test_loss: 883.9045016854146
+n_features: 5, train_loss: 677.6104933351714, test_loss: 619.8882409595186
+n_features: 6, train_loss: 620.371892220087, test_loss: 572.3529242367321
+n_features: 7, train_loss: 517.6277768492205, test_loss: 651.3542829880988
+n_features: 8, train_loss: 543.9111769105314, test_loss: 672.9005105541463
+n_features: 9, train_loss: 529.2984148016732, test_loss: 551.4531600436388
+n_features: 10, train_loss: 370.4232974319459, test_loss: 527.855986564484
+n_features: 11, train_loss: 322.3440756636766, test_loss: 696.3388265842856
+n_features: 12, train_loss: 337.0711207597967, test_loss: 497.8722271643491
+n_features: 13, train_loss: 462.7833245649445, test_loss: 720.2466364885663
+n_features: 14, train_loss: 301.0456684755855, test_loss: 409.5707651654718
+n_features: 15, train_loss: 487.52775187651457, test_loss: 626.4032784178646
+n_features: 16, train_loss: 349.6308829488077, test_loss: 564.3779108169946
+n_features: 17, train_loss: 338.09667595650035, test_loss: 402.4180443724936
+n_features: 18, train_loss: 230.07973570489426, test_loss: 271.2436150037014
+n_features: 19, train_loss: 367.53528307393555, test_loss: 498.7738249518124
+n_features: 20, train_loss: 230.4686967213246, test_loss: 443.1047792156534
+n_features: 21, train_loss: 177.3645665854939, test_loss: 331.26150128649317
+n_features: 22, train_loss: 179.66757376107867, test_loss: 354.70454622753493
+n_features: 23, train_loss: 256.84779728914765, test_loss: 486.05062866586724
+n_features: 24, train_loss: 240.18380310182874, test_loss: 382.983145095857
+n_features: 25, train_loss: 201.11036437844706, test_loss: 435.4014222437682
+n_features: 26, train_loss: 151.746341104766, test_loss: 393.8267128703312
+n_features: 27, train_loss: 179.77282944986837, test_loss: 394.5622064438192
+n_features: 28, train_loss: 206.65498336270272, test_loss: 366.38112764860404
+n_features: 29, train_loss: 120.77117090291006, test_loss: 391.9500834063906
+n_features: 30, train_loss: 215.74281276351718, test_loss: 294.55970351374845
+n_features: 31, train_loss: 160.61373398844222, test_loss: 310.2455789475123
+n_features: 32, train_loss: 131.45278499133616, test_loss: 451.43896260613764
+n_features: 33, train_loss: 198.548077356667, test_loss: 315.5486652509159
+n_features: 34, train_loss: 128.7968012210274, test_loss: 306.33481721301473
+n_features: 35, train_loss: 128.611901214066, test_loss: 256.1555850058118
+n_features: 36, train_loss: 122.76601236546999, test_loss: 320.0095170895791
+n_features: 37, train_loss: 115.67702166035647, test_loss: 255.69242909193161
+n_features: 38, train_loss: 149.4776164102285, test_loss: 350.6390540941281
+n_features: 39, train_loss: 101.30842757380655, test_loss: 334.38329723539687
+n_features: 40, train_loss: 90.94083049285284, test_loss: 379.42049099917017
+n_features: 41, train_loss: 139.1123793208786, test_loss: 290.5689344709957
+n_features: 42, train_loss: 53.728208558174714, test_loss: 337.93279924873
+n_features: 43, train_loss: 155.53138518771894, test_loss: 356.7893526309867
+n_features: 44, train_loss: 85.56672012234463, test_loss: 319.1852552902812
+n_features: 45, train_loss: 86.58785263753349, test_loss: 409.3956563292058
+n_features: 46, train_loss: 88.00032749623577, test_loss: 416.8679686231748
+n_features: 47, train_loss: 49.128456418874975, test_loss: 340.00208922268007
+n_features: 48, train_loss: 96.2208790992932, test_loss: 350.8126025337374
+n_features: 49, train_loss: 55.11597735441449, test_loss: 334.85024725423057
+n_features: 50, train_loss: 61.30471876627998, test_loss: 307.08669055002247
+n_features: 51, train_loss: 125.83932254869451, test_loss: 525.955550242138
+n_features: 52, train_loss: 39.30400043897461, test_loss: 307.4818321320623
+n_features: 53, train_loss: 75.20117312716928, test_loss: 616.8711922268718
+n_features: 54, train_loss: 64.18276639263658, test_loss: 486.7329982215946
+n_features: 55, train_loss: 56.230337792001755, test_loss: 539.9075319524245
+n_features: 56, train_loss: 34.126472628945045, test_loss: 416.77847160595195
+n_features: 57, train_loss: 46.12808945526538, test_loss: 278.6739150025593
+n_features: 58, train_loss: 57.94347540360889, test_loss: 592.4698772895982
+n_features: 59, train_loss: 39.466899894182774, test_loss: 519.880177346063
+n_features: 60, train_loss: 48.44230508006081, test_loss: 569.8357432971998
+n_features: 61, train_loss: 35.19343079755788, test_loss: 608.8976635953925
+n_features: 62, train_loss: 70.83723005370258, test_loss: 351.71429512811505
+n_features: 63, train_loss: 29.345350057770606, test_loss: 562.2080572534466
+n_features: 64, train_loss: 49.32001721744631, test_loss: 327.4250265465618
+n_features: 65, train_loss: 37.03076037098691, test_loss: 525.9368922028788
+n_features: 66, train_loss: 45.74823271305931, test_loss: 402.7804467366444
+n_features: 67, train_loss: 29.060241462236373, test_loss: 469.4730636144323
+n_features: 68, train_loss: 40.946598245091124, test_loss: 538.1287837667433
+n_features: 69, train_loss: 32.05299296144625, test_loss: 415.3015201011959
+n_features: 70, train_loss: 24.941897750320962, test_loss: 513.8399617677259
+n_features: 71, train_loss: 29.49706393189696, test_loss: 372.32381412888077
+n_features: 72, train_loss: 44.224970347812224, test_loss: 558.8645351097226
+n_features: 73, train_loss: 38.101942863783414, test_loss: 953.5286517188835
+n_features: 74, train_loss: 22.909916490719944, test_loss: 471.77212381677185
+n_features: 75, train_loss: 28.72420669434708, test_loss: 555.0457873565406
+n_features: 76, train_loss: 38.320920451767186, test_loss: 1366.9570815989841
+n_features: 77, train_loss: 25.191223104674027, test_loss: 940.5990069280405
+n_features: 78, train_loss: 16.45736950079676, test_loss: 481.6018121507022
+n_features: 79, train_loss: 12.095340718475567, test_loss: 879.9572799224261
+n_features: 80, train_loss: 18.16719198709257, test_loss: 936.4343787799713
+n_features: 81, train_loss: 13.296474238093214, test_loss: 990.5837390816348
+n_features: 82, train_loss: 9.688198157839413, test_loss: 850.2233834979955
+n_features: 83, train_loss: 11.933404028129244, test_loss: 410.4247303318095
+n_features: 84, train_loss: 12.088979351266271, test_loss: 544.7055898304603
+n_features: 85, train_loss: 13.082707116239144, test_loss: 1049.4126488681493
+n_features: 86, train_loss: 9.798329071899582, test_loss: 1946.0460725827904
+n_features: 87, train_loss: 7.171829382190809, test_loss: 1100.2845517732774
+n_features: 88, train_loss: 8.163782754326183, test_loss: 1396.6577641315566
+n_features: 89, train_loss: 7.882410721143178, test_loss: 1424.7622102386504
+n_features: 90, train_loss: 5.486420176754576, test_loss: 1059.3039509238795
+n_features: 91, train_loss: 3.4866573597867245, test_loss: 736.2291495709538
+n_features: 92, train_loss: 6.515575193833081, test_loss: 2485.340363678104
+n_features: 93, train_loss: 5.792263476625767, test_loss: 1481.3702084958977
+n_features: 94, train_loss: 5.492478753076243, test_loss: 1966.281830667905
+n_features: 95, train_loss: 4.248678247834374, test_loss: 2714.998870528863
+n_features: 96, train_loss: 4.46083941977378, test_loss: 6904.176875520563
+n_features: 97, train_loss: 0.16727082265026907, test_loss: 4100.513000321499
+n_features: 98, train_loss: 1.0074523652431875, test_loss: 2853.806766781338
+n_features: 99, train_loss: 0.0718802006788629, test_loss: 7442.214963364073
+n_features: 100, train_loss: 1.1730424769508862e-25, test_loss: 52693.2981988324
+n_features: 101, train_loss: 5.309715808155786e-25, test_loss: 17187.50615964653
+n_features: 102, train_loss: 1.6606295138589415e-26, test_loss: 5718.370904459518
+n_features: 103, train_loss: 1.0065426588330233e-24, test_loss: 1963.6424956030248
+n_features: 104, train_loss: 3.3129696773258205e-25, test_loss: 2419.449294229186
+n_features: 105, train_loss: 7.3282077329332605e-25, test_loss: 1199.5859056732154
+n_features: 106, train_loss: 1.0968796723242664e-25, test_loss: 1615.2123198219422
+n_features: 107, train_loss: 2.0327985089393369e-26, test_loss: 1999.020319871457
+n_features: 108, train_loss: 2.608409603880347e-25, test_loss: 1184.2955001802263
+n_features: 109, train_loss: 1.4708388491784024e-26, test_loss: 2394.4716736769515
+n_features: 110, train_loss: 1.1068315717259854e-25, test_loss: 1966.4881740812398
+n_features: 111, train_loss: 3.1721328114987094e-26, test_loss: 962.1121776899402
+n_features: 112, train_loss: 1.5570714829816912e-25, test_loss: 853.7864190467278
+n_features: 113, train_loss: 9.597647686049716e-25, test_loss: 803.7245917520175
+n_features: 114, train_loss: 2.5203610911593302e-26, test_loss: 1077.620478173137
+n_features: 115, train_loss: 6.104189710166859e-26, test_loss: 465.3255555619509
+n_features: 116, train_loss: 1.3170663901388968e-26, test_loss: 1513.9895081373181
+n_features: 117, train_loss: 1.7301120225962798e-24, test_loss: 735.6166765634983
+n_features: 118, train_loss: 4.322740823862209e-27, test_loss: 522.7018043543102
+n_features: 119, train_loss: 4.880450199673425e-27, test_loss: 595.1139332882022
+n_features: 120, train_loss: 7.333288840257976e-26, test_loss: 695.1497815976337
+n_features: 121, train_loss: 3.442430059563997e-25, test_loss: 396.2827179371382
+n_features: 122, train_loss: 1.0066553431759916e-26, test_loss: 459.5887819089858
+n_features: 123, train_loss: 1.4915239962195343e-25, test_loss: 882.3322949451202
+n_features: 124, train_loss: 1.6920873984233637e-25, test_loss: 332.62282875410347
+n_features: 125, train_loss: 6.177657100339855e-25, test_loss: 441.36408764152327
+n_features: 126, train_loss: 1.2854090568857316e-26, test_loss: 578.0330855852766
+n_features: 127, train_loss: 3.0889628611346122e-27, test_loss: 445.0687237048395
+n_features: 128, train_loss: 5.550666878344218e-25, test_loss: 484.1217981622603
+n_features: 129, train_loss: 1.0028221201261029e-26, test_loss: 551.5078971383319
+n_features: 130, train_loss: 1.0914930071234843e-26, test_loss: 418.27829001906883
+n_features: 131, train_loss: 1.601087525328024e-26, test_loss: 434.64219277171446
+n_features: 132, train_loss: 3.794307358142715e-26, test_loss: 346.30937906406245
+n_features: 133, train_loss: 8.461350172570321e-27, test_loss: 717.6645091702312
+n_features: 134, train_loss: 1.8919717010887673e-26, test_loss: 370.455306119791
+n_features: 135, train_loss: 5.706144499673404e-27, test_loss: 527.5060731191779
+n_features: 136, train_loss: 2.741811761359351e-25, test_loss: 234.07600088284735
+n_features: 137, train_loss: 8.86515204621582e-26, test_loss: 397.0530574708048
+n_features: 138, train_loss: 1.557805845924313e-26, test_loss: 508.5017907533353
+n_features: 139, train_loss: 1.889432929759017e-24, test_loss: 488.3643513733467
+n_features: 140, train_loss: 2.2871304202262117e-26, test_loss: 383.7924665926956
+n_features: 141, train_loss: 3.2894516136775e-26, test_loss: 353.96383282684104
+n_features: 142, train_loss: 1.7437855112457776e-26, test_loss: 708.9181611901896
+n_features: 143, train_loss: 4.0214652299160224e-26, test_loss: 468.0186977270285
+n_features: 144, train_loss: 3.158884237722169e-25, test_loss: 447.20517421986546
+n_features: 145, train_loss: 1.709091815390562e-26, test_loss: 367.3786874341506
+n_features: 146, train_loss: 4.514367463692037e-27, test_loss: 192.4006280181527
+n_features: 147, train_loss: 3.026805848006694e-26, test_loss: 277.8300568212001
+n_features: 148, train_loss: 1.033876213417198e-24, test_loss: 284.3246641127815
+n_features: 149, train_loss: 2.2971838608175747e-26, test_loss: 302.49218397078675
+n_features: 150, train_loss: 1.40817372334586e-26, test_loss: 287.99939118469536
+n_features: 151, train_loss: 3.971702774679033e-27, test_loss: 347.2041312613695
+n_features: 152, train_loss: 9.436685469833936e-26, test_loss: 329.2919430444753
+n_features: 153, train_loss: 1.1662009279085568e-25, test_loss: 322.85923153281755
+n_features: 154, train_loss: 4.722530343867766e-25, test_loss: 232.93599981256193
+n_features: 155, train_loss: 1.789578867072335e-25, test_loss: 261.8174847630268
+n_features: 156, train_loss: 7.882929253692526e-27, test_loss: 331.15205043574645
+n_features: 157, train_loss: 1.4113895675810664e-24, test_loss: 197.8572778505888
+n_features: 158, train_loss: 1.5564129517587739e-26, test_loss: 302.1066132224491
+n_features: 159, train_loss: 4.4660601363504373e-26, test_loss: 262.152674884286
+n_features: 160, train_loss: 9.422848849556359e-27, test_loss: 276.5683625224486
+n_features: 161, train_loss: 4.0253373536692996e-26, test_loss: 206.23876987001861
+n_features: 162, train_loss: 8.307616032449287e-25, test_loss: 207.58527626821405
+n_features: 163, train_loss: 1.2117431178184625e-26, test_loss: 159.60263794589065
+n_features: 164, train_loss: 2.364525366422219e-26, test_loss: 259.2082424413648
+n_features: 165, train_loss: 4.946873767007232e-27, test_loss: 225.08553151122223
+n_features: 166, train_loss: 4.82396940067636e-25, test_loss: 361.7194035557423
+n_features: 167, train_loss: 4.735276817538895e-25, test_loss: 406.66765527691337
+n_features: 168, train_loss: 4.6114931030265926e-26, test_loss: 204.065839823034
+n_features: 169, train_loss: 1.479764150143008e-24, test_loss: 204.26723706910218
+n_features: 170, train_loss: 1.380921241476029e-26, test_loss: 219.89455898758422
+n_features: 171, train_loss: 1.576115541727574e-26, test_loss: 266.8571187746969
+n_features: 172, train_loss: 3.617621448034934e-27, test_loss: 358.3481296215622
+n_features: 173, train_loss: 5.817108632830186e-26, test_loss: 216.44218258925932
+n_features: 174, train_loss: 6.60959188872036e-27, test_loss: 228.4486667727155
+n_features: 175, train_loss: 3.445961863792381e-27, test_loss: 201.40068879126827
+n_features: 176, train_loss: 9.727393039359523e-27, test_loss: 223.61881900704793
+n_features: 177, train_loss: 3.3976419146762983e-26, test_loss: 292.1360144712246
+n_features: 178, train_loss: 5.733750687051613e-27, test_loss: 256.29737393911006
+n_features: 179, train_loss: 1.9154743819494365e-26, test_loss: 206.4536017000889
+n_features: 180, train_loss: 2.4480026274127064e-26, test_loss: 288.1798413242245
+n_features: 181, train_loss: 1.3774868660067821e-24, test_loss: 163.80350530850706
+n_features: 182, train_loss: 2.2501952870423753e-27, test_loss: 256.5575433737865
+n_features: 183, train_loss: 1.865415277048153e-24, test_loss: 208.49234663067452
+n_features: 184, train_loss: 8.428442346870961e-26, test_loss: 209.83701366809146
+n_features: 185, train_loss: 8.756589267284289e-26, test_loss: 236.06001392269079
+n_features: 186, train_loss: 1.0797295586643308e-24, test_loss: 293.5009372769484
+n_features: 187, train_loss: 7.055957344152736e-26, test_loss: 246.52892898159465
+n_features: 188, train_loss: 8.356285239870395e-27, test_loss: 250.4063317140857
+n_features: 189, train_loss: 1.1542710150072594e-24, test_loss: 174.20672382192544
+n_features: 190, train_loss: 4.393348657348727e-26, test_loss: 236.88800521949824
+n_features: 191, train_loss: 2.298830686843314e-25, test_loss: 207.8358691163963
+n_features: 192, train_loss: 2.6212719809399756e-26, test_loss: 200.40265686741282
+n_features: 193, train_loss: 1.6337699438844787e-25, test_loss: 176.87981821032935
+n_features: 194, train_loss: 3.906735074797715e-26, test_loss: 189.9045451666233
+n_features: 195, train_loss: 4.528981979708252e-25, test_loss: 213.5780847901012
+n_features: 196, train_loss: 4.904009037569785e-27, test_loss: 164.42290585840317
+n_features: 197, train_loss: 5.308112724467241e-25, test_loss: 165.0757646086805
+n_features: 198, train_loss: 1.0093467393693794e-26, test_loss: 168.1351319943843
+n_features: 199, train_loss: 7.138531112887714e-26, test_loss: 228.91174780743006
+n_features: 200, train_loss: 3.1449882951045195e-25, test_loss: 290.864948713115
+n_features: 201, train_loss: 4.6426316123231554e-26, test_loss: 180.49466703992962
+n_features: 202, train_loss: 2.5138813728927027e-25, test_loss: 127.83743813103061
+n_features: 203, train_loss: 8.770307176321581e-27, test_loss: 237.92834805613916
+n_features: 204, train_loss: 2.974447374790138e-26, test_loss: 211.4634997864693
+n_features: 205, train_loss: 7.406099567822324e-26, test_loss: 168.323542533458
+n_features: 206, train_loss: 5.543533150013736e-25, test_loss: 177.22640216637396
+n_features: 207, train_loss: 1.0315550917694267e-25, test_loss: 217.5944222220379
+n_features: 208, train_loss: 1.8678046612952434e-25, test_loss: 240.44189986544393
+n_features: 209, train_loss: 4.496968840604548e-26, test_loss: 157.53790039615618
+n_features: 210, train_loss: 1.4010884631224332e-25, test_loss: 151.87049276289525
+n_features: 211, train_loss: 8.406649472718552e-26, test_loss: 185.26067475680517
+n_features: 212, train_loss: 4.912700884517214e-25, test_loss: 196.8551066517735
+n_features: 213, train_loss: 1.7851364915478915e-24, test_loss: 205.97833089656015
+n_features: 214, train_loss: 1.461355557806288e-26, test_loss: 184.94762868714736
+n_features: 215, train_loss: 6.621357379343181e-27, test_loss: 229.7779752430724
+n_features: 216, train_loss: 5.006186246318537e-27, test_loss: 127.30799083618611
+n_features: 217, train_loss: 2.5218108202879e-26, test_loss: 139.5910524694223
+n_features: 218, train_loss: 7.512347841183888e-26, test_loss: 201.73695346937959
+n_features: 219, train_loss: 4.241922024122316e-27, test_loss: 182.52495063949834
+n_features: 220, train_loss: 8.999402515130014e-26, test_loss: 167.94621223738045
+n_features: 221, train_loss: 2.1063639298709485e-26, test_loss: 190.22045799851293
+n_features: 222, train_loss: 6.114523048468156e-26, test_loss: 145.66789342570218
+n_features: 223, train_loss: 2.663782181495474e-25, test_loss: 153.43730237707388
+n_features: 224, train_loss: 1.7512118872505737e-25, test_loss: 123.63271243112554
+n_features: 225, train_loss: 1.1895103408056753e-24, test_loss: 183.3101917685366
+n_features: 226, train_loss: 1.0051245980324554e-25, test_loss: 122.25462765511311
+n_features: 227, train_loss: 4.511126862536434e-25, test_loss: 126.5403823264562
+n_features: 228, train_loss: 1.308871111409782e-26, test_loss: 171.0909667749586
+n_features: 229, train_loss: 5.218934636885658e-27, test_loss: 231.67199936485574
+n_features: 230, train_loss: 4.61642083360462e-26, test_loss: 208.02847019456357
+n_features: 231, train_loss: 3.134408644846329e-27, test_loss: 166.36384575130785
+n_features: 232, train_loss: 2.5305365828308347e-24, test_loss: 134.97507216992952
+n_features: 233, train_loss: 5.973263155980619e-27, test_loss: 139.548069798915
+n_features: 234, train_loss: 5.5071012114798176e-27, test_loss: 188.0659789484847
+n_features: 235, train_loss: 4.163967775544507e-25, test_loss: 156.4496763695452
+n_features: 236, train_loss: 4.736670143112742e-25, test_loss: 128.29698668058066
+n_features: 237, train_loss: 1.1337669906764853e-25, test_loss: 162.0313024115761
+n_features: 238, train_loss: 6.190541974726424e-26, test_loss: 130.53930752547694
+n_features: 239, train_loss: 2.0037337374688964e-25, test_loss: 127.51517829484382
+n_features: 240, train_loss: 6.280038855790949e-25, test_loss: 117.86991947903554
+n_features: 241, train_loss: 1.6634379079853348e-26, test_loss: 185.36542028627045
+n_features: 242, train_loss: 1.0537979075302709e-25, test_loss: 128.54697955482558
+n_features: 243, train_loss: 6.2038477705008775e-25, test_loss: 124.67052495121808
+n_features: 244, train_loss: 2.5708472030173434e-26, test_loss: 171.1477176234329
+n_features: 245, train_loss: 9.088178554820872e-27, test_loss: 112.73673003770509
+n_features: 246, train_loss: 7.070380793127326e-25, test_loss: 179.35400224525347
+n_features: 247, train_loss: 1.2016160050141229e-26, test_loss: 178.6187697403597
+n_features: 248, train_loss: 3.1845406764870336e-25, test_loss: 159.69595205062572
+n_features: 249, train_loss: 4.882964324030268e-27, test_loss: 184.86334363913207
+n_features: 250, train_loss: 4.0600639474894536e-27, test_loss: 112.74968484697118
+n_features: 251, train_loss: 4.0897867472839836e-27, test_loss: 139.23008922200626
+n_features: 252, train_loss: 1.373700292246524e-26, test_loss: 144.15644837817877
+n_features: 253, train_loss: 3.2215556867679045e-26, test_loss: 110.89804761442527
+n_features: 254, train_loss: 4.409288331495817e-26, test_loss: 101.01810823407799
+n_features: 255, train_loss: 7.842431106970743e-27, test_loss: 94.82745327918296
+n_features: 256, train_loss: 2.1896885462762757e-25, test_loss: 142.8001349175788
+n_features: 257, train_loss: 1.6421946376629355e-24, test_loss: 133.30976679450157
+n_features: 258, train_loss: 1.5126275723411277e-26, test_loss: 152.3901132915839
+n_features: 259, train_loss: 7.429649782482914e-25, test_loss: 187.67382612274673
+n_features: 260, train_loss: 4.9613848633587724e-27, test_loss: 163.56251915429212
+n_features: 261, train_loss: 1.5155991324850048e-25, test_loss: 136.46565203562594
+n_features: 262, train_loss: 2.5180718661161854e-26, test_loss: 104.57750136613922
+n_features: 263, train_loss: 1.0676805543904005e-24, test_loss: 152.24513807326105
+n_features: 264, train_loss: 4.8946610358429166e-27, test_loss: 118.90559149675659
+n_features: 265, train_loss: 1.3902796339801341e-26, test_loss: 154.34064438636543
+n_features: 266, train_loss: 1.987936432993677e-26, test_loss: 108.95375610019248
+n_features: 267, train_loss: 2.740113531184875e-26, test_loss: 171.51924072236733
+n_features: 268, train_loss: 1.8325723583310362e-25, test_loss: 139.66268458023856
+n_features: 269, train_loss: 2.4461557191443095e-26, test_loss: 215.500037633368
+n_features: 270, train_loss: 9.45808455448322e-26, test_loss: 153.0339115860803
+n_features: 271, train_loss: 1.237764890394487e-25, test_loss: 158.72599597312404
+n_features: 272, train_loss: 1.1762224245636388e-26, test_loss: 142.16106623266035
+n_features: 273, train_loss: 4.125677564214776e-26, test_loss: 124.53541037950068
+n_features: 274, train_loss: 2.293021053653637e-24, test_loss: 123.16847616633004
+n_features: 275, train_loss: 2.1258686340816738e-25, test_loss: 165.23849600371702
+n_features: 276, train_loss: 7.082916320462018e-27, test_loss: 165.26708167153723
+n_features: 277, train_loss: 1.6893659910029128e-26, test_loss: 151.04415662268593
+n_features: 278, train_loss: 1.8667517932969483e-25, test_loss: 185.4507104263985
+n_features: 279, train_loss: 5.11488698962682e-26, test_loss: 146.8540969728087
+n_features: 280, train_loss: 8.426028432500985e-27, test_loss: 121.44033582860033
+n_features: 281, train_loss: 2.2324940914243082e-25, test_loss: 112.63450367523943
+n_features: 282, train_loss: 6.581699246225942e-27, test_loss: 104.46832190635368
+n_features: 283, train_loss: 3.253370890809727e-26, test_loss: 164.53014693301026
+n_features: 284, train_loss: 8.270591279736236e-27, test_loss: 128.12193468255637
+n_features: 285, train_loss: 5.408252699928259e-25, test_loss: 180.75880693946928
+n_features: 286, train_loss: 1.828748458630971e-25, test_loss: 187.42447234708422
+n_features: 287, train_loss: 3.6761284264062976e-27, test_loss: 148.5963966445129
+n_features: 288, train_loss: 4.26247737272966e-26, test_loss: 119.61384729215713
+n_features: 289, train_loss: 1.1440809008128005e-24, test_loss: 105.49524941043012
+n_features: 290, train_loss: 3.1688374190228584e-25, test_loss: 159.47927175605855
+n_features: 291, train_loss: 1.5741263451385878e-25, test_loss: 75.86592287468265
+n_features: 292, train_loss: 7.803935483656863e-25, test_loss: 117.1155245595687
+n_features: 293, train_loss: 1.7660248806705423e-26, test_loss: 159.64678464107817
+n_features: 294, train_loss: 6.685529202387602e-25, test_loss: 117.57177705147049
+n_features: 295, train_loss: 6.621949887838712e-26, test_loss: 88.65991095993495
+n_features: 296, train_loss: 3.4620738547434545e-26, test_loss: 162.0028151056007
+n_features: 297, train_loss: 1.34578084080728e-26, test_loss: 145.59464874323038
+n_features: 298, train_loss: 3.821930506030387e-27, test_loss: 106.03992098713653
+n_features: 299, train_loss: 9.206068393687428e-27, test_loss: 132.52873141283183</code></pre>
+</div>
+</div>
+<p>Now let’s plot our results! I am using logs to better visualize the loss changes over different magnitudes.</p>
+<div id="b46dbb74" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, n <span class="kw">in</span> <span class="bu">enumerate</span>(n_features):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    plt.scatter(n, np.log(train_losses[i]), color <span class="op">=</span> <span class="st">'blue'</span>, alpha <span class="op">=</span> <span class="fl">.5</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    plt.scatter(n, np.log(test_losses[i]), color <span class="op">=</span> <span class="st">'red'</span>, alpha <span class="op">=</span> <span class="fl">.5</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'n_features'</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'MSE'</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Train and Test Losses'</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'Train Loss'</span>, <span class="st">'Test Loss'</span>])</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="main_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Interesting results! The plot illustrates the double descent phenomenon, where the test error initially decreases as the model gains more features, then spikes sharply around the interpolation threshold when the number of features matches the number of training samples. After this peak, the test error decreases again in the overparameterized region, where the model has enough capacity to capture complex patterns despite fitting the training data perfectly. This second descent reflects the ability of highly overparameterized models to generalize well even though being classically overfitted.</p>
+<div id="e7ee713c" class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># n_features with the lowest test loss</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>best_n <span class="op">=</span> n_features[np.argmin(test_losses)]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Best n_features: </span><span class="sc">{</span>best_n<span class="sc">}</span><span class="ss">, test_loss: </span><span class="sc">{</span><span class="bu">min</span>(test_losses)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best n_features: 291, test_loss: 75.86592287468265</code></pre>
+</div>
+</div>
+<p>We see as well that the best loss is when n_features is 291, which is way beyond the threshold of n = 100</p>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>Through this exploration, we observed the double descent phenomenon, where test error initially decreases as the model’s capacity increases, then spikes near the interpolation threshold, and eventually decreases again as the model becomes significantly overparameterized. This behavior challenges the classical view that overfitting is always detrimental to generalization. Instead, we see that sufficiently large models can recover from this high-error region and achieve strong generalization, even when the number of features far exceeds the number of training samples. This suggests that overparameterized models, such as deep neural networks, can exploit their massive capacity to fit complex, real-world data without overfitting in the traditional sense.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/yahyarahhawi\.github\.io");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
