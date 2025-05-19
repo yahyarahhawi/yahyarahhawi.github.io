@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/blog-post/main.html",
       "/posts/Double Descent/main.html",
       "/posts/adam/main.html",
       "/posts/Implementing-logistic-regression/SGD.html",
